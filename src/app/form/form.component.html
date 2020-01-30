@@ -1,0 +1,130 @@
+<div class="alert alert-danger" *ngIf="errorMsg">
+{{errorMsg}}
+</div>
+<form #userForm="ngForm" *ngIf="!subbmited" (ngSubmit)="onSubmit()" novalidate>
+  {{userForm.form.valid}}
+  <br>
+  <div class="alert alert-dismissible alert-info">
+    {{userForm.value | json}}
+  </div>
+  <hr>
+  <div class="alert alert-dismissible alert-warning">
+    {{userModel | json}}
+  </div>
+  <hr>
+  <fieldset>
+    <legend>Registeration Form</legend>
+    <div class="form-group">
+      <label for="nameid">First Name</label>
+      <input type="text" #name="ngModel" name="name" [class.is-invalid]="name.invalid && name.touched" class="form-control" id="nameid" aria-describedby="namehelp"
+        placeholder="Enter First Name" [(ngModel)]="userModel.name" required>
+      <!-- <small [class.d-none]="name.valid || name.untouched" id="namehelp" class="text-danger">Please enter your name here</small> -->
+      <div *ngIf="name.errors && (name.valid || name.touched)">
+        <small *ngIf="name.errors.required" id="namehelp" class="text-danger">Please enter your name here</small>
+        <small *ngIf="name.errors.pattern" id="namehelp" class="text-danger">Please enter your name here</small>
+      </div>
+
+    </div>
+    <!-- {{name.className}} -->
+    <!-- {{name.untouched}} -->
+    <div class="form-group">
+      <label for="lastid">Last Name</label>
+      <input type="text" #lastName="ngModel" name="lastName" [class.is-invalid]="lastName.invalid && lastName.touched" class="form-control" id="lastid" aria-describedby="lasthelp"
+        placeholder="Enter Last Name" [(ngModel)]="userModel.lastName" required>
+      <!-- <small [class.d-none]="lastName.valid || lastName.untouched" id="lasthelp" class="text-danger">Please enter your last name here</small> -->
+      <div *ngIf="lastName.errors && (lastName.valid || lastName.touched)">
+        <small *ngIf="lastName.errors.required" id="lasthelp" class="text-danger">Please enter your last name here</small>
+        <small *ngIf="lastName.errors.pattern" id="lasthelp" class="text-danger">Please enter your last name here</small>
+      </div>
+      
+    </div>
+
+    <div class="form-group">
+      <label for="emailid">Email</label>
+      <input type="email" #email="ngModel" [class.is-invalid]="email.invalid && email.touched" name="email" class="form-control" id="emailid" aria-describedby="emailhelp"
+        placeholder="Enter Last Name" [(ngModel)]="userModel.email" required>
+      <small [class.d-none]="email.valid || email.untouched" id="emailhelp" class="text-danger">Please enter your email here. we wont share it with no
+        body!</small>
+    </div>
+
+    <div class="form-group">
+      <label for="passwordid">Password</label>
+      <input type="password" #password="ngModel" name="password" [class.is-invalid]="password.invalid && password.touched" class="form-control" id="passwordid" aria-describedby="passwordhelp"
+        placeholder="Enter Password" [(ngModel)]="userModel.password" required>
+      <small [class.d-none]="password.valid || password.untouched" id="passwordhelp" class="text-danger">Please enter your password here. we wont share it with no
+        body!</small>
+    </div>
+
+    <div class="form-group">
+      <label for="phoneid">Mobile</label>
+      <input type="tel" #mobile="ngModel" pattern="^\d{10}$" name="mobile" [class.is-invalid]="mobile.invalid && mobile.touched" class="form-control" id="phoneid" aria-describedby="mobilehelp"
+        placeholder="Enter Phone number" [(ngModel)]="userModel.mobile" required>
+      <small [class.d-none]="mobile.valid || mobile.untouched" id="mobilehelp" class="text-danger">Please enter your mobile here. we wont share it with no
+        body!</small>
+    </div>
+
+    <!-- <div (ngModel)Group="address">
+      <div class="form-group">
+        <label for="streetid">Street</label>
+        <input type="text" name="street" class="form-control" id="streetid" placeholder="Write Somthing" (ngModel)>
+      </div>
+
+      <div class="form-group">
+        <label for="cityid">City</label>
+        <input type="text" name="city" class="form-control" id="cityid" placeholder="Write Somthing" (ngModel)>
+      </div>
+
+      <div class="form-group">
+        <label for="stateid">State</label>
+        <input type="text" name="state" class="form-control" id="stateid" placeholder="Write Somthing" (ngModel)>
+      </div>
+
+      <div class="form-group">
+        <label for="postalid">Postal Code</label>
+        <input type="text" name="postalCode" class="form-control" id="postalid" placeholder="Write Somthing" (ngModel)>
+      </div>
+    </div> -->
+
+    <div class="form-group">
+      <label for="genderid">Gender</label>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" #gender="ngModel" [class.is-invalid]="gender.invalid && gender.touched" class="form-check-input" name="gender" id="genderid" value="male"
+            [(ngModel)]="userModel.gender" area-describedby="genderhelp">
+          Male
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" #gender="ngModel" [class.is-invalid]="gender.invalid && gender.touched" class="form-check-input" name="gender" id="genderid" value="female"
+            [(ngModel)]="userModel.gender" area-describedby="genderhelp">
+          Female
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="tech">Type of tech</label>
+      <select (blur)="validateTech(tech.value)" (change)="validateTech(tech.value)" #tech="ngModel" [class.is-invalid]="techHasError && tech.touched" class="form-control" name="tech" id="tech" [(ngModel)]="userModel.tech">
+        <option value="default">Select</option>
+        <option *ngFor="let topic of topics">{{topic}}</option>
+      </select>
+      <small class="text-danger" [class.d-none]="!techHasError || tech.untouched">please choose tech</small>
+    </div>
+
+    <fieldset class="form-group">
+      <legend>Stay Updated</legend>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="checkbox" class="form-check-input" name="alerts" id="alerts" value="" checked=""
+            [(ngModel)]="userModel.alerts">
+          Subscribe
+        </label>
+      </div>
+    </fieldset>
+    <div class="d-flex justify-content-between">
+      <button [disabled]="userForm.form.invalid || techHasError" type="submit" name="submit" id="submit" class="btn btn-success">Submit</button>
+      <button type="reset" name="cancel" id="cancel" class="btn btn-danger">Cancel</button>
+    </div>
+  </fieldset>
+</form>
